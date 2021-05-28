@@ -1,0 +1,265 @@
+<div>
+    <button type="submit" class="btn btn-primary" (click)="onOpenModal(null, 'add')">Add Subjects <span
+            class="sr-only">(current)</span></button>
+</div>
+<div class="container" id="main-container">
+    <div class="row">
+        <div *ngFor="let subject of subjects" class="col-md-6 col-xl-6">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Id :
+                    {{subject?.id}}</li>
+                <li class="list-group-item">Name :
+                    {{subject?.name}}</li>
+                <li class="list-group-item">Type :
+                    {{subject?.type}}</li>
+                <li class="list-group-item">Category :
+                    {{subject?.category}}</li>
+                <li class="list-group-item">Credits :
+                    {{subject?.credits}}
+                <li class="list-group-item">Lecturer name :
+                    {{subject?.lecturername}}</li>
+                <li class="list-group-item"> Year : {{subject?.year}}</li>
+            </ul>
+
+            <div class="float-right btn-group btn-group-sm">
+                <a (click)="onOpenModal(subject, 'edit')" class="btn btn-primary tooltips" data-placement="top"
+                    data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                <a (click)="onOpenModal(subject, 'delete')" class="btn btn-secondary tooltips" data-placement="top"
+                    data-original-title="Delete"><i class="fa fa-trash"></i></a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Subject Modal -->
+<div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog" aria-labelledby="addSubjectModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addsubjectModalLabel">Add Subject</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddSubject(addForm)">
+                    <div class="form-group">
+                        <label for="id">Id</label>
+                        <input type="number" ngModel name="id" class="form-control" id="id" required>
+                    </div>
+                    <div>
+                        <label for="name">Subject Name</label>
+                        <input type="text" ngModel name="name" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Subject Type</label>
+                        <select id="type" name="type" ngModel="name" class="form-control">
+                            <option vallue="1">Foundation (F)</option>
+                            <option vallue="2">Elective (E)</option>
+                            <option vallue="3">Core (C)</option>
+                            <option vallue="4">Mandatory (M)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Subject Category</label>
+                        <select id="category" name="category" ngModel="name" class="form-control"
+                            placeholder="Subject category">
+                            <option vallue="1">Basic Foundation Sciences (BFS)</option>
+                            <option vallue="2">Engineering Foundation Sciences (EFS)</option>
+                            <option vallue="3">Core Subjects (CS)</option>
+                            <option vallue="4">Minor Courses (MCFHS)</option>
+                            <option vallue="5">Professional Elective Courses (PEC)</option>
+                            <option vallue="6">Engineering Foundation Lab (EFL) </option>
+                            <option vallue="7">Core Project Work (CP)</option>
+                            <option vallue="8">Open Elective Courses (OEC)</option>
+                            <option vallue="9">Core Seminar (CS)</option>
+                            <option vallue="10">Industrial Training(IT)/ Mini-Project</option>
+                            <option vallue="11">Professional Elective (PE)</option>
+                            <option vallue="12">Core Lab (CL)</option>
+                            <option vallue="13">Open Elective (OE)</option>
+                            <option vallue="14">Basic Foundation Lab (BFL)</option>
+                            <option vallue="15">Humanaties and Social Foundation Lab (HFL)</option>
+                            <option vallue="16">Humanaties and Social Foundation Science (HFS)</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="credits">Subject Credits</label>
+                        <input type="number" ngModel name="credits" class="form-control" id=" credits" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lecturername">Lecturer Name</label>
+                        <select ngModel="lecturername" name="lecturername" class="form-control" id="lecturername"
+                            required>
+                            <option *ngFor="let lecturer of lecturers"> {{lecturer?.fname
+                                }} {{lecturer?.lname}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Subject Year</label>
+                        <select id="year" name="year" ngModel="name" class="form-control">
+                            <option vallue="1st year" selected>1st Year</option>
+                            <option vallue="2">2nd Year</option>
+                            <option vallue="3">3rd Year</option>
+                            <option vallue="4">4th Year</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="add-subject-form" class="btn btn-secondary"
+                            data-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateSubjectModal" tabindex="-1" role="dialog" aria-labelledby="subjectEditModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateSubjectModalLabel">Edit Subject {{editSubject?.name}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #editForm="ngForm">
+                    <div class="form-group">
+                        <label for="id">Subject Id</label>
+                        <input type="number" ngModel="{{editSubject?. id}}" name="id" class="form-control" id="id">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject name">Subject Name</label>
+                        <input type="text" ngModel="{{editSubject?. name}}" name="name" class="form-control" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Subject Type</label>
+                        <select id="type" name="type" ngModel="name" class="form-control">
+                            <option vallue="1">Foundation (F)</option>
+                            <option vallue="2">Elective (E)</option>
+                            <option vallue="3">Core (C)</option>
+                            <option vallue="4">Mandatory (M)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Subject Category</label>
+                        <select id="category" name="category" ngModel="name" class="form-control"
+                            placeholder="Subject category">
+                            <option vallue="1">Basic Foundation Sciences (BFS)</option>
+                            <option vallue="2">Engineering Foundation Sciences (EFS)</option>
+                            <option vallue="3">Core Subjects (CS)</option>
+                            <option vallue="4">Minor Courses (MCFHS)</option>
+                            <option vallue="5">Professional Elective Courses (PEC)</option>
+                            <option vallue="6">Engineering Foundation Lab (EFL) </option>
+                            <option vallue="7">Core Project Work (CP)</option>
+                            <option vallue="8">Open Elective Courses (OEC)</option>
+                            <option vallue="9">Core Seminar (CS)</option>
+                            <option vallue="10">Industrial Training(IT)/ Mini-Project</option>
+                            <option vallue="11">Professional Elective (PE)</option>
+                            <option vallue="12">Core Lab (CL)</option>
+                            <option vallue="13">Open Elective (OE)</option>
+                            <option vallue="14">Basic Foundation Lab (BFL)</option>
+                            <option vallue="15">Humanaties and Social Foundation Lab (HFL)</option>
+                            <option vallue="16">Humanaties and Social Foundation Science (HFS)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject credits">Subject Credits</label>
+                        <input type="number" ngModel="{{editSubject?. credits}}" name="credits" class="form-control"
+                            id="credits">
+                    </div>
+                    <div class="form-group">
+                        <label for="lecturername">Lecturer Name</label>
+                        <select ngModel="lecturername" name="lecturername" class="form-control" id="lecturername"
+                            required>
+                            <option *ngFor="let lecturer of lecturers"> {{lecturer?.fname
+                                }} {{lecturer?.lname}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Subject Year</label>
+                        <select id="year" name="year" ngModel="name" class="form-control">
+                            <option vallue="1st year">1st Year</option>
+                            <option vallue="2nd year">2nd Year</option>
+                            <option vallue="3rd year">3rd Year</option>
+                            <option vallue="4th year">4th Year</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                        <button (click)="onUpdateSubject(editForm.value)" data-dismiss="modal"
+                            class="btn btn-primary">Save
+                            changes</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteSubjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Subject</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete subject {{deleteSubject?.name}}?</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button (click)="onDeleteSubject(deleteSubject?.id)" class="btn btn-danger"
+                        data-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div ng-app="demo" ng-controller="myCtrl">
+ 
+    <select>
+    <option ng-repeat="name in names">{{name}}</option>
+    </select>
+     
+    </div>
+     
+    <script>
+    var app = angular.module('demo', []);
+    app.controller('myCtrl', function($scope) {
+    $scope.names = ["Demavand", "Pradeep", "Ashutosh"];
+    });
+    </script>-->
+<!--<div ng-app="demo" ng-controller="myCtrl">
+ 
+<select ng-model="selectedName" ng-options="x for x in names">
+</select>
+ 
+</div>
+ 
+<script>
+ 
+var app = angular.module('demo', []);
+app.controller('myCtrl', function($scope) {
+$scope.names = ["Demavand", "Pradeep", "Ashutosh"];
+});
+</script>-->

@@ -1,0 +1,238 @@
+<div>
+    <button type="submit" class="btn btn-primary" (click)="onOpenModal(null, 'add')">Add Student <span
+            class="sr-only">(current)</span></button>
+</div>
+
+<div class="container" id="main-container">
+    <div class="row">
+        <div *ngFor="let student of students" class="col-md-6 col-xl-5">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Id :
+                    {{student?.id}}</li>
+                <li class="list-group-item">Fname :
+                    {{student?.fname}}</li>
+                <li class="list-group-item">Lname :
+                    {{student?.lname}}</li>
+                <li class="list-group-item">Date of Birth :
+                    {{student?.dob}}</li>
+                <li class="list-group-item">Gender :
+                    {{student?.gender}}
+                <li class="list-group-item">Email :
+                    {{student?.email}}</li>
+                <li class="list-group-item"> Phonenumber : {{student?.phonenumber}}</li>
+                <li class="list-group-item"> GuardianFname : {{student?.guardianfname}}</li>
+                <li class="list-group-item"> GuardianLname: {{student?.guardianlname}}</li>
+                <li class="list-group-item"> GuardianEmail : {{student?.guardianemail}}</li>
+                <li class="list-group-item"> GuardianPhonenumber : {{student?.guardianphonenumber}}</li>
+                <li class="list-group-item"> Address : {{student?.address}}</li>
+            </ul>
+
+            <div class="float-right btn-group btn-group-sm">
+                <a (click)="onOpenModal(student, 'edit')" class="btn btn-primary tooltips" data-placement="top"
+                    data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                <a (click)="onOpenModal(student, 'delete')" class="btn btn-secondary tooltips" data-placement="top"
+                    data-original-title="Delete"><i class="fa fa-trash"></i></a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddStudent(addForm)">
+                    <div class="form-group">
+                        <label for="id">Student Id</label>
+                        <input type="number" ngModel name="id" class="form-control" id="id" required>
+                    </div>
+                    <div>
+                        <label for="fname">Student Fname</label>
+                        <input type="text" ngModel name="fname" class="form-control" id="fname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lname">Student Lname</label>
+                        <input type="text" ngModel name="lname" class="form-control" id="lname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">Student Date of Birth</label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" ngModel class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Student Gender</label>
+                        <select id="gender" name="gender" ngModel="name" class="form-control">
+                            <option vallue="male">Male</option>
+                            <option vallue="female">Female</option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Student Email </label>
+                        <input type="email" ngModel name="email" class="form-control" id="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phonenumber">Lecturer Phoneumber</label>
+                        <input type="number" ngModel name="phonenumber" class="form-control" id="phonenumber" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guardianfname">Guardian Fname</label>
+                        <input type="text" ngModel name="guardianfname" class="form-control" id="guardianfname"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianlname">Guardian Lname</label>
+                        <input type="text" ngModel name="guardianlname" class="form-control" id="guardianlname"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianemail">Guardian Email</label>
+                        <input type="email" ngModel name="guardianemail" class="form-control" id="guardianemail"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guardianphonenumber">Guardian Phoneumber</label>
+                        <input type="number" ngModel name="guardianphonenumber" class="form-control"
+                            id="guardianphonenumber" required>
+                    </div>
+
+
+
+
+
+
+                    <div class="modal-footer">
+                        <button type="button" id="add-student-form" class="btn btn-secondary"
+                            data-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog" aria-labelledby="studentEditModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateStudentModalLabel">Edit Student {{editStudent?.id}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #editForm="ngForm">
+                    <div class="form-group">
+                        <label for="id">Student Id</label>
+                        <input type="number" ngModel="{{editStudent?. id}}" name="id" class="form-control" id="id">
+                    </div>
+                    <div class="form-group">
+                        <label for=" fname">Student Fname</label>
+                        <input type="text" ngModel="{{editStudent?. fname}}" name="fname" class="form-control"
+                            id="fname">
+                    </div>
+                    <div class="form-group">
+                        <label for=" lname">Student Lname</label>
+                        <input type="text" ngModel="{{editStudent?. lname}}" name="lname" class="form-control"
+                            id="lname">
+                    </div>
+                    <div class="form-group">
+                        <label for=" dateOfBirth">Student Date of Birth</label>
+                        <input type="date" ngModel name="dateOfBirth" class="form-control" id="dateOfBirth">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Student Gender</label>
+                        <select id="gender" name="gender" ngModel="name" class="form-control">
+                            <option vallue="male">Male</option>
+                            <option vallue="female">Female</option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Student Email</label>
+                        <input type="email" ngModel="{{editStudent?.email}}" name="email" class="form-control"
+                            id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phonenumber">Student Phoneumber</label>
+                        <input type="number" ngModel="{{editStudent?.phonenumber}}" name="phonenumber"
+                            class="form-control" id="phonenumber" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for=" guardianfname">Guardian Fname</label>
+                        <input type="text" ngModel name="guardianfname" class="form-control" id="guardianfname">
+                    </div>
+                    <div class="form-group">
+                        <label for=" guardianlname">Guardian Lname</label>
+                        <input type="text" ngModel name="guardianlname" class="form-control" id="guardianlname">
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianemail">Guardiane Email</label>
+                        <input type="guardianemail" ngModel name="guardianemail" class="form-control" id="guardianemail"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianphonenumber">Guardian Phoneumber</label>
+                        <input type="number" ngModel name="guardianphonenumber" class="form-control"
+                            id="guardianphonenumber" required>
+                    </div>
+
+
+
+
+                    <div class="modal-footer">
+                        <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                        <button (click)="onUpdateStudent(editForm.value)" data-dismiss="modal"
+                            class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete student {{deleteStudent?.id}}?</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button (click)="onDeleteStudent(deleteStudent?.id)" class="btn btn-danger"
+                        data-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
